@@ -16,8 +16,8 @@ import KegGraphic from '@/components/kegGraphic'
 export default {
   data () {
     return {
-      weight: null,
-      fullWeight: null
+      fullWeight: null,
+      weight: null
     }
   },
 
@@ -28,6 +28,9 @@ export default {
   computed: {
     percent () {
       return ((this.weight / this.fullWeight) * 100).toFixed(0)
+    },
+    roomId () {
+      return this.$route.params.roomId
     }
   },
 
@@ -40,16 +43,17 @@ export default {
       this.fullWeight = this.weight
     },
     tare () {
-      this.$socket.emit('tare')
+      this.$socket.emit('tare', this.roomId)
     }
   },
 
   sockets: {
     connect () {
-      alert('socket connected')
+      this.$socket.emit('room', this.roomId)
     },
-    weightUpdate (data) {
-      this.weight = data.weight
+    weightUpdate (weight) {
+      console.log(weight)
+      this.weight = weight
     }
   }
 }
