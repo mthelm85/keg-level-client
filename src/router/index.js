@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import KegWeight from '@/components/KegWeight'
-import Start from '@/components/Start'
+import Login from '@/components/Login'
+import Setup from '@/components/Setup'
 
 Vue.use(Router)
 
@@ -10,13 +11,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Start',
-      component: Start
+      name: 'Login',
+      component: Login
     },
     {
       path: '/my-keg/:roomId',
       name: 'KegWeight',
       component: KegWeight
+    },
+    {
+      path: '/setup',
+      name: 'Setup',
+      component: Setup
     }
   ]
 })
