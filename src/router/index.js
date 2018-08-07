@@ -15,7 +15,7 @@ export default new Router({
       component: Login
     },
     {
-      path: '/my-keg/:roomId',
+      path: '/my-kegs/',
       name: 'KegWeight',
       component: KegWeight
     },

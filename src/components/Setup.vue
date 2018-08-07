@@ -10,13 +10,13 @@
             <form>
               <div class="form-group">
                 <label>Scale Name</label>
-                <input v-model="scale.name" type="text" class="form-control" placeholder="Keg 1">
+                <input v-model="scale[0].name" type="text" class="form-control">
               </div>
               <div class="form-group">
                 <label>Scale I.D. (from box)</label>
-                <input v-model="scale.id" type="text" class="form-control">
+                <input v-model="scale[0].id" type="text" class="form-control">
               </div>
-              <button @click.prevent="register(1)" class="btn btn-primary">Submit</button>
+              <button @click.prevent="register(0)" :disabled="scale[0].disableBtn" class="btn btn-primary">{{ btnText(0) }}</button>
             </form>
           </div>
         </div>
@@ -26,20 +26,20 @@
       <div class="col d-flex justify-content-center">
         <div class="card shadow">
           <div class="card-header text-center">
-            {{ scaleHeader2 }}
+            {{ headerText(1) }}
           </div>
           <div class="card-body text-center">
             <button v-if="!addSecond" @click="addSecond = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
             <form v-else>
               <div class="form-group">
                 <label>Scale Name</label>
-                <input type="text" class="form-control" placeholder="Keg 1">
+                <input v-model="scale[1].name" type="text" class="form-control" placeholder="Keg 1">
               </div>
               <div class="form-group">
                 <label>Scale I.D. (from box)</label>
-                <input type="text" class="form-control">
+                <input v-model="scale[1].id" type="text" class="form-control">
               </div>
-              <button @click.prevent="register(2)" class="btn btn-primary">Submit</button>
+              <button @click.prevent="register(1)" class="btn btn-primary">{{ btnText(1) }}</button>
             </form>
           </div>
         </div>
@@ -49,20 +49,20 @@
       <div class="col d-flex justify-content-center">
         <div class="card shadow">
           <div class="card-header text-center">
-            {{ scaleHeader3 }}
+            {{ headerText(2) }}
           </div>
           <div class="card-body text-center">
             <button v-if="!addThird" @click="addThird = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
             <form v-else>
               <div class="form-group">
                 <label>Scale Name</label>
-                <input type="text" class="form-control" placeholder="Keg 1">
+                <input v-model="scale[2].name" type="text" class="form-control" placeholder="Keg 1">
               </div>
               <div class="form-group">
                 <label>Scale I.D. (from box)</label>
-                <input type="text" class="form-control">
+                <input v-model="scale[2].name" type="text" class="form-control">
               </div>
-              <button @click.prevent="register(3)" class="btn btn-primary">Submit</button>
+              <button @click.prevent="register(2)" class="btn btn-primary">{{ btnText(2) }}</button>
             </form>
           </div>
         </div>
@@ -76,34 +76,50 @@ import Api from '@/api'
 export default {
   data () {
     return {
-      addSecond: false,
-      addThird: false,
-      scale: {
-        name: '',
-        id: ''
-      }
-    }
-  },
-
-  computed: {
-    scaleHeader2 () {
-      return (this.addSecond ? 'Register Second Scale' : 'Add Another Scale')
-    },
-    scaleHeader3 () {
-      return (this.addThird ? 'Register Third Scale' : 'Add Another Scale')
+      addSecond: false, // if user clicks to add a second scale, gets set to true
+      addThird: false, // if user clicks to add a third scale, gets set to true
+      scale: [ // array of scales that user can add
+        {
+          name: '',
+          id: '',
+          disableBtn: false
+        },
+        {
+          name: '',
+          id: '',
+          disableBtn: false
+        },
+        {
+          name: '',
+          id: '',
+          disableBtn: false
+        }
+      ]
     }
   },
 
   methods: {
+    btnText (num) {
+      return (this.scale[num].disableBtn ? 'Registered' : 'Submit')
+    },
+    headerText (num) {
+      switch (num) {
+        case 1:
+          return (this.addSecond ? 'Register Second Scale' : 'Add Another Scale')
+        case 2:
+          return (this.addThird ? 'Register Third Scale' : 'Add Another Scale')
+      }
+    },
     async register (num) {
       const res = await Api().post('/register', {
         'email': 'mthelm85@gmail.com',
-        'name': this.scale.name,
-        'id': this.scale.id
+        'name': this.scale[num].name,
+        'id': this.scale[num].id
       })
-      if (res.message === 'Scale registered') {
-        alert('Scale successfully registered')
-      } else if (res.message === 'Error') {
+      console.log(res.data.message)
+      if (res.data.message === 'Scale registered') {
+        this.scale[num].disableBtn = true
+      } else if (res.data.message === 'Error') {
         alert('There was an error registering your scale')
       }
     }

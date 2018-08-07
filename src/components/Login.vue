@@ -1,6 +1,6 @@
 <template lang="html">
-<div class="container">
-  <div class="row">
+<div class="container mt-5">
+  <div class="row my-auto">
     <div class="col mx-auto">
       <div class="card shadow">
         <div class="card-body">

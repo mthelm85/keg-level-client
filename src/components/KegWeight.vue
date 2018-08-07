@@ -1,22 +1,29 @@
 <template lang="html">
-  <div class="container">
+  <div class="container mt-5">
     <div class="row">
-      <div class="col mx-auto">
-        <keg-graphic :percent="percent"></keg-graphic>
-        <br>
-        <button class="btn btn-warning" @click="tare">Tare</button>
-        <button class="btn btn-success" @click="setFull">Set to Full</button>
+      <div class="col text-center mx-auto">
+        <div class="card shadow">
+          <div class="card-body">
+            <span class="h4">{{ kegs[0].name }}</span>
+            <keg-graphic :percent="percent"></keg-graphic>
+            <br>
+            <button class="btn btn-warning" @click="tare">Tare</button>
+            <button class="btn btn-success" @click="setFull">Set to Full</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Api from '@/api'
 import KegGraphic from '@/components/kegGraphic'
 export default {
   data () {
     return {
       fullWeight: null,
+      kegs: [],
       weight: null
     }
   },
@@ -34,8 +41,16 @@ export default {
     }
   },
 
-  created () {
-    this.$socket.emit('getWeight')
+  async created () {
+    let kegs = await Api().get('/get-kegs', {
+      params: {
+        email: 'mthelm85@gmail.com'
+      }
+    })
+    let i = 0
+    for (i; i < kegs.data.length; i++) {
+      this.kegs.push(kegs.data[i])
+    }
   },
 
   methods: {
@@ -43,13 +58,13 @@ export default {
       this.fullWeight = this.weight
     },
     tare () {
-      this.$socket.emit('tare', this.roomId)
+      this.$socket.emit('tare', this.kegs[0].id)
     }
   },
 
   sockets: {
     connect () {
-      this.$socket.emit('room', this.roomId)
+      this.$socket.emit('room', this.kegs[0].id)
     },
     weightUpdate (weight) {
       console.log(weight)
