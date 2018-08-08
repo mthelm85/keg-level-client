@@ -71,6 +71,7 @@
 
 <script>
 import Api from '@/api'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -96,6 +97,13 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters([
+      'getEmail',
+      'getKegs'
+    ])
+  },
+
   methods: {
     btnText (num) {
       return (this.scale[num].disableBtn ? 'Registered' : 'Submit')
@@ -110,11 +118,10 @@ export default {
     },
     async register (num) {
       const res = await Api().post('/register', {
-        'email': 'mthelm85@gmail.com',
+        'email': this.getEmail,
         'name': this.scale[num].name,
         'id': this.scale[num].id
       })
-      console.log(res.data.message)
       if (res.data.message === 'Scale registered') {
         this.scale[num].disableBtn = true
       } else if (res.data.message === 'Error') {

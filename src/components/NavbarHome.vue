@@ -11,7 +11,7 @@
       <form class="form-inline my-2 my-lg-0" @submit.prevent="login">
         <input class="form-control mr-sm-2" v-model.trim="email" type="email" name="email" placeholder="E-mail" aria-label="E-mail">
         <input class="form-control mr-sm-2" v-model.trim="password" type="password" name="password" placeholder="Password" aria-label="Password">
-        <button class="btn btn-success my-2 my-sm-0" :disabled="disabled">Login</button>
+        <button class="btn btn-success my-2 my-sm-0">Login</button>
       </form>
     </div>
   </nav>
@@ -19,16 +19,30 @@
 
 <script>
 import Api from '@/api'
+import { mapMutations } from 'vuex'
 export default {
+  data () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+
   methods: {
+    ...mapMutations([
+      'storeEmail',
+      'storeKegs'
+    ]),
     login () {
       Api().post('/login', {
         email: this.email,
         password: this.password
       }).then((res) => {
-        console.log(res)
         if (res.data.success === 'yes') {
-          this.$router.push('/setup')
+          this.$cookies.set('user_session', res.data.userEmail, '0')
+          this.storeEmail(res.data.userEmail)
+          this.storeKegs(res.data.userKegs)
+          this.$router.push('/my-kegs')
         } else {
           alert('Login failed')
         }
