@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="container">
     <div class="row mt-4">
-      <div class="col d-flex justify-content-center">
+      <div class="col">
         <div class="card shadow">
           <div class="card-header text-center">
             Register Your Scale
@@ -21,9 +21,7 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col d-flex justify-content-center">
+      <div class="col">
         <div class="card shadow">
           <div class="card-header text-center">
             {{ headerText(1) }}
@@ -45,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div v-if="addSecond" class="row my-4">
+    <div v-show="addSecond" class="row mt-4">
       <div class="col d-flex justify-content-center">
         <div class="card shadow">
           <div class="card-header text-center">

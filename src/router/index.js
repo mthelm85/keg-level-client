@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import KegWeight from '@/components/KegWeight'
-import Login from '@/components/Login'
+import Home from '@/components/Home'
+import NavbarHome from '@/components/NavbarHome'
 import Setup from '@/components/Setup'
 
 Vue.use(Router)
@@ -12,17 +13,26 @@ export default new Router({
     {
       path: '/',
       name: 'Login',
-      component: Login
+      components: {
+        navbar: NavbarHome,
+        body: Home
+      }
     },
     {
       path: '/my-kegs/',
       name: 'KegWeight',
-      component: KegWeight
+      components: {
+        navbar: NavbarHome,
+        body: KegWeight
+      }
     },
     {
       path: '/setup',
       name: 'Setup',
-      component: Setup
+      components: {
+        navbar: NavbarHome,
+        body: Setup
+      }
     }
   ]
 })
