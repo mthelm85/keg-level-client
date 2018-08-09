@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="keg mt-5 mx-auto">
-    <div class="beer" :style="{ height: beerLevel }">
+    <div class="beer" :style="{ height: beerLevel, background: computeColor }">
       <div class="foam">
         <div class="foam-1"></div>
         <div class="foam-2"></div>
@@ -32,9 +32,22 @@ export default {
   computed: {
     beerLevel () {
       return `${this.percent}%`
+    },
+    computeColor () {
+      switch (this.beerColor) {
+        case 1:
+          return 'linear-gradient(#ffe377, #f7c600)'
+        case 2:
+          return 'linear-gradient(#a33700, #882300)'
+        case 3:
+          return 'linear-gradient(#440600, #2f0200)'
+      }
     }
   },
-  props: ['percent']
+  props: [
+    'percent',
+    'beerColor'
+  ]
 }
 </script>
 
@@ -53,12 +66,10 @@ export default {
 }
 
 .beer {
-  background-color: #ffcc00;
   width: 100%;
   height: 90px;
   position: absolute;
   bottom: 0;
-  background: linear-gradient(#ffe377, #f7c600);
 }
 
 /* The Foam */
