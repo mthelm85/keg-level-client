@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="keg mt-5 mx-auto">
+  <div class="keg mx-auto">
     <div class="beer" :style="{ height: beerLevel, background: computeColor }">
       <div class="foam">
         <div class="foam-1"></div>

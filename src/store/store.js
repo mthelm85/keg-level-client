@@ -23,8 +23,7 @@ export const store = new Vuex.Store({
       state.email = email
     },
     storeKegs: (state, kegs) => {
-      let i = 0
-      for (i; i < kegs.length; i++) {
+      for (let i = 0; i < kegs.length; i++) {
         state.kegs.push(kegs[i])
       }
     }

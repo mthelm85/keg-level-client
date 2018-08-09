@@ -4,16 +4,16 @@
       <div class="col">
         <div class="card shadow">
           <div class="card-header text-center">
-            Register Your Scale
+            Register Your KegMo
           </div>
           <div class="card-body text-center">
             <form>
               <div class="form-group">
-                <label>Scale Name</label>
+                <label>KegMo Name</label>
                 <input v-model="scale[0].name" type="text" class="form-control">
               </div>
               <div class="form-group">
-                <label>Scale I.D. (from box)</label>
+                <label>KegMo I.D. (from box)</label>
                 <input v-model="scale[0].id" type="text" class="form-control">
               </div>
               <button @click.prevent="register(0)" :disabled="scale[0].disableBtn" class="btn btn-primary">{{ btnText(0) }}</button>
@@ -30,11 +30,11 @@
             <button v-if="!addSecond" @click="addSecond = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
             <form v-else>
               <div class="form-group">
-                <label>Scale Name</label>
+                <label>KegMo Name</label>
                 <input v-model="scale[1].name" type="text" class="form-control" placeholder="Keg 1">
               </div>
               <div class="form-group">
-                <label>Scale I.D. (from box)</label>
+                <label>KegMo I.D. (from box)</label>
                 <input v-model="scale[1].id" type="text" class="form-control">
               </div>
               <button @click.prevent="register(1)" class="btn btn-primary">{{ btnText(1) }}</button>
@@ -53,11 +53,11 @@
             <button v-if="!addThird" @click="addThird = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
             <form v-else>
               <div class="form-group">
-                <label>Scale Name</label>
+                <label>KegMo Name</label>
                 <input v-model="scale[2].name" type="text" class="form-control" placeholder="Keg 1">
               </div>
               <div class="form-group">
-                <label>Scale I.D. (from box)</label>
+                <label>KegMo I.D. (from box)</label>
                 <input v-model="scale[2].name" type="text" class="form-control">
               </div>
               <button @click.prevent="register(2)" class="btn btn-primary">{{ btnText(2) }}</button>
@@ -111,9 +111,9 @@ export default {
     headerText (num) {
       switch (num) {
         case 1:
-          return (this.addSecond ? 'Register Second Scale' : 'Add Another Scale')
+          return (this.addSecond ? 'Register Second KegMo' : 'Add Another KegMo')
         case 2:
-          return (this.addThird ? 'Register Third Scale' : 'Add Another Scale')
+          return (this.addThird ? 'Register Third KegMo' : 'Add Another KegMo')
       }
     },
     async register (num) {

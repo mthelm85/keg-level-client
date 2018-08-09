@@ -1,7 +1,7 @@
 <template lang="html">
 <div class="container mt-5">
   <div class="row my-auto">
-    <div class="col mx-auto">
+    <div class="col d-flex justify-content-center">
       <div class="card shadow text-center">
         <div class="card-header h4">
           Create Account
@@ -31,6 +31,7 @@
 
 <script>
 import Api from '@/api'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -41,6 +42,9 @@ export default {
   },
 
   methods: {
+    ...mapMutations([
+      'storeEmail'
+    ]),
     login () {
       Api().post('/signup', {
         email: this.email,
@@ -48,6 +52,8 @@ export default {
       }).then((res) => {
         console.log(res)
         if (res.data.success === 'yes') {
+          this.storeEmail(this.email)
+          this.$cookies.set('user_session', this.email, '0')
           this.$router.push('/setup')
         } else {
           alert('Login failed')

@@ -30,8 +30,7 @@ export default {
 
   methods: {
     ...mapMutations([
-      'storeEmail',
-      'storeKegs'
+      'storeEmail'
     ]),
     login () {
       Api().post('/login', {
@@ -39,9 +38,8 @@ export default {
         password: this.password
       }).then((res) => {
         if (res.data.success === 'yes') {
+          this.storeEmail(this.email)
           this.$cookies.set('user_session', res.data.userEmail, '0')
-          this.storeEmail(res.data.userEmail)
-          this.storeKegs(res.data.userKegs)
           this.$router.push('/my-kegs')
         } else {
           alert('Login failed')

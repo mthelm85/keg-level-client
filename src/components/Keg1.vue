@@ -1,26 +1,32 @@
 <template lang="html">
   <div class="card shadow">
+    <div class="card-header h4">
+      {{ getKegs[0].name }}
+    </div>
     <div class="card-body">
-      <span class="h4">{{ getKegs[0].name }}</span>
-      <keg-graphic :percent="percent" :beerColor="beerColor"></keg-graphic>
+      <keg-graphic :percent="percent" :beerColor="getKegs[0].color"></keg-graphic>
+    </div>
+    <div class="card-footer">
+      <span class="settings text-primary" @click="changeSettings = !changeSettings"><small>{{ settingsTxt }}</small></span>
+      <button :disabled="changeSettings" @click="beerColor = 1" class="btn btn-color-picker pale mb-3"></button>
+      <button :disabled="changeSettings" @click="beerColor = 2" class="btn btn-color-picker brown mb-3"></button>
+      <button :disabled="changeSettings" @click="beerColor = 3" class="btn btn-color-picker dark mb-3"></button>
       <br>
-      <button @click="beerColor = 1" class="btn btn-color-picker pale mb-3"></button>
-      <button @click="beerColor = 2" class="btn btn-color-picker brown mb-3"></button>
-      <button @click="beerColor = 3" class="btn btn-color-picker dark mb-3"></button>
-      <br>
-      <button class="btn btn-warning" @click="tare">Tare</button>
-      <button class="btn btn-success" @click="setFull">Set to Full</button>
+      <button :disabled="changeSettings" class="btn btn-warning" @click="tare">Tare</button>
+      <button :disabled="changeSettings" class="btn btn-success" @click="setFull">Set to Full</button>
     </div>
   </div>
 </template>
 
 <script>
+import Api from '@/api'
 import KegGraphic from '@/components/kegGraphic'
 import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       beerColor: 1,
+      changeSettings: true,
       fullWeight: null,
       weight: null
     }
@@ -39,10 +45,18 @@ export default {
     },
     roomId () {
       return this.$route.params.roomId
+    },
+    settingsTxt () {
+      return (this.changeSettings ? 'Settings' : 'Done')
     }
   },
 
   methods: {
+    async changeColor (num) {
+      let res = await Api().post('/change-color', {
+        color: num
+      })
+    },
     setFull () {
       this.fullWeight = this.weight
     },
@@ -79,5 +93,14 @@ export default {
 
 .pale {
   background: linear-gradient(#ffe377, #f7c600);
+}
+
+.settings {
+  position: absolute;
+  right: 6px;
+}
+
+.settings:hover {
+  cursor: pointer;
 }
 </style>
