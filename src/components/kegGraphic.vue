@@ -35,11 +35,11 @@ export default {
     },
     computeColor () {
       switch (this.beerColor) {
-        case 1:
+        case 0:
           return 'linear-gradient(#ffe377, #f7c600)'
-        case 2:
+        case 1:
           return 'linear-gradient(#a33700, #882300)'
-        case 3:
+        case 2:
           return 'linear-gradient(#440600, #2f0200)'
       }
     }

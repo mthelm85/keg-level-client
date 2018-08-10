@@ -7,8 +7,8 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav mr-auto">
         <span class="navbar-brand mb-0 h1">KegMo</span>
-        <router-link to="/setup" class="nav-link">Add Another KegMo</router-link>
-        <router-link to="/my-kegs" class="nav-link">My KegMos</router-link>
+        <router-link to="/setup" class="nav-link">Add</router-link>
+        <router-link to="/my-kegs" class="nav-link">View</router-link>
       </ul>
       <form class="form-inline my-2 my-lg-0" @submit.prevent="logout">
         <button class="btn btn-warning my-2 my-sm-0">Logout</button>

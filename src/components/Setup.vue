@@ -73,6 +73,10 @@
 import Api from '@/api'
 import { mapGetters } from 'vuex'
 export default {
+  beforeRouteLeave (to, from, next) {
+    this.$store.state.kegs.length = 0
+    next()
+  },
   data () {
     return {
       addSecond: false, // if user clicks to add a second scale, gets set to true
@@ -104,6 +108,20 @@ export default {
     ])
   },
 
+  async created () {
+    let kegs = await Api().get('/get-kegs', {
+      params: {
+        email: this.getEmail
+      }
+    })
+    console.log(kegs)
+    for (let i = 0; i < kegs.data.userKegs.length; i++) {
+      this.scale[i].name = kegs.data.userKegs[i].name
+      this.scale[i].id = kegs.data.userKegs[i].id
+      this.scale[i].disableBtn = true
+    }
+  },
+
   methods: {
     btnText (num) {
       return (this.scale[num].disableBtn ? 'Registered' : 'Submit')
@@ -117,7 +135,7 @@ export default {
       }
     },
     async register (num) {
-      const res = await Api().post('/register', {
+      const res = await Api().patch('/register', {
         'email': this.getEmail,
         'name': this.scale[num].name,
         'id': this.scale[num].id
