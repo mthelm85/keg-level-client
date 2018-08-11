@@ -6,7 +6,7 @@
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav mr-auto">
-        <span class="navbar-brand mb-0 h1">KegMo</span>
+        <span class="navbar-brand mb-0 h1">Kegmo</span>
       </ul>
       <form class="form-inline my-2 my-lg-0" @submit.prevent="login">
         <input class="form-control mr-sm-2" v-model.trim="email" type="email" name="email" placeholder="E-mail" aria-label="E-mail">

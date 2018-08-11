@@ -2,13 +2,12 @@
   <div class="card shadow">
     <div class="card-header">
       <span class="h4">{{ getKegs[0].name }}</span>
-      <span class="settings text-primary mt-1" @click="changeName = !changeName"><small>{{ nameChangeTxt }}</small></span>
     </div>
     <div class="card-body">
       <keg-graphic :percent="percent" :beerColor="getKegs[0].color"></keg-graphic>
     </div>
     <div class="card-footer">
-      <span class="settings text-primary mt-2" @click="changeSettings = !changeSettings"><small>{{ settingsTxt }}</small></span>
+      <span class="settings btn btn-sm btn-outline-primary" @click="changeSettings = !changeSettings"><small>{{ settingsTxt }}</small></span>
       <button :disabled="changeSettings" @click="changeColor(0)" class="btn btn-color-picker pale mb-3"></button>
       <button :disabled="changeSettings" @click="changeColor(1)" class="btn btn-color-picker brown mb-3"></button>
       <button :disabled="changeSettings" @click="changeColor(2)" class="btn btn-color-picker dark mb-3"></button>
@@ -26,7 +25,6 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      changeName: true,
       changeSettings: true,
       fullWeight: null,
       weight: null
@@ -42,9 +40,6 @@ export default {
       'getEmail',
       'getKegs'
     ]),
-    nameChangeTxt () {
-      return (this.changeName ? 'Change' : 'Done')
-    },
     percent () {
       return ((this.weight / this.fullWeight) * 100).toFixed(0)
     },
@@ -52,7 +47,7 @@ export default {
       return this.$route.params.roomId
     },
     settingsTxt () {
-      return (this.changeSettings ? 'Setup' : 'Done')
+      return (this.changeSettings ? 'Edit' : 'Done')
     }
   },
 
@@ -71,13 +66,13 @@ export default {
       this.fullWeight = this.weight
     },
     tare () {
-      this.$socket.emit('tare', this.kegs[0].id)
+      this.$socket.emit('tare', this.getKegs[0].id)
     }
   },
 
   sockets: {
     connect () {
-      this.$socket.emit('room', this.kegs[0].id)
+      this.$socket.emit('room', this.getKegs[0].id)
     },
     weightUpdate (weight) {
       console.log(`Keg1 weight is: ${weight}`)

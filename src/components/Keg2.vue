@@ -1,29 +1,31 @@
 <template lang="html">
   <div class="card shadow">
-    <div class="card-header h4">
-      {{ getKegs[1].name }}
+    <div class="card-header">
+      <span class="h4">{{ getKegs[1].name }}</span>
     </div>
     <div class="card-body">
-      <keg-graphic :percent="percent" :beerColor="beerColor"></keg-graphic>
+      <keg-graphic :percent="percent" :beerColor="getKegs[1].color"></keg-graphic>
     </div>
     <div class="card-footer">
-      <button @click="beerColor = 1" class="btn btn-color-picker pale mb-3"></button>
-      <button @click="beerColor = 2" class="btn btn-color-picker brown mb-3"></button>
-      <button @click="beerColor = 3" class="btn btn-color-picker dark mb-3"></button>
+      <span class="settings btn btn-sm btn-outline-primary" @click="changeSettings = !changeSettings"><small>{{ settingsTxt }}</small></span>
+      <button :disabled="changeSettings" @click="changeColor(0)" class="btn btn-color-picker pale mb-3"></button>
+      <button :disabled="changeSettings" @click="changeColor(1)" class="btn btn-color-picker brown mb-3"></button>
+      <button :disabled="changeSettings" @click="changeColor(2)" class="btn btn-color-picker dark mb-3"></button>
       <br>
-      <button class="btn btn-warning" @click="tare">Tare</button>
-      <button class="btn btn-success" @click="setFull">Set to Full</button>
+      <button :disabled="changeSettings" class="btn btn-warning" @click="tare">Tare</button>
+      <button :disabled="changeSettings" class="btn btn-success" @click="setFull">Set to Full</button>
     </div>
   </div>
 </template>
 
 <script>
+import Api from '@/api'
 import KegGraphic from '@/components/kegGraphic'
 import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      beerColor: 1,
+      changeSettings: true,
       fullWeight: null,
       weight: null
     }
@@ -35,6 +37,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'getEmail',
       'getKegs'
     ]),
     percent () {
@@ -42,10 +45,23 @@ export default {
     },
     roomId () {
       return this.$route.params.roomId
+    },
+    settingsTxt () {
+      return (this.changeSettings ? 'Edit' : 'Done')
     }
   },
 
   methods: {
+    async changeColor (num) {
+      let res = await Api().patch('/change-color', {
+        email: this.getEmail,
+        keg: 1,
+        color: num
+      })
+      if (res.data.message === 'Color changed') {
+        this.$store.state.kegs[1].color = num
+      }
+    },
     setFull () {
       this.fullWeight = this.weight
     },
@@ -82,5 +98,14 @@ export default {
 
 .pale {
   background: linear-gradient(#ffe377, #f7c600);
+}
+
+.settings {
+  position: absolute;
+  right: 6px;
+}
+
+.settings:hover {
+  cursor: pointer;
 }
 </style>

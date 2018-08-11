@@ -9,11 +9,11 @@
       </div>
     </div>
     <div v-if="getKegs.length > 2" class="row m-3">
-      <div class="col text-center mx-auto">
+      <div class="col d-flex justify-content-center text-center mx-auto">
         <keg3></keg3>
       </div>
-      <div v-if="getKegs.length > 3" class="col text-center mx-auto">
-        <keg4></keg4>
+      <div class="col d-flex justify-content-center text-center mx-auto">
+        <keg4 v-if="getKegs.length > 3"></keg4>
       </div>
     </div>
   </div>
