@@ -20,12 +20,11 @@
 </template>
 
 <script>
-import Api from '@/api'
 import Keg1 from '@/components/Keg1'
 import Keg2 from '@/components/Keg2'
 import Keg3 from '@/components/Keg3'
 import Keg4 from '@/components/Keg4'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     Keg1,
@@ -38,23 +37,6 @@ export default {
     ...mapGetters([
       'getEmail',
       'getKegs'
-    ])
-  },
-
-  async created () {
-    if (this.getKegs.length === 0) {
-      let kegs = await Api().get('/get-kegs', {
-        params: {
-          email: this.getEmail
-        }
-      })
-      this.storeKegs(kegs.data.userKegs)
-    }
-  },
-
-  methods: {
-    ...mapMutations([
-      'storeKegs'
     ])
   }
 }

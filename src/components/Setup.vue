@@ -118,10 +118,6 @@
 import Api from '@/api'
 import { mapGetters } from 'vuex'
 export default {
-  beforeRouteLeave (to, from, next) {
-    this.$store.state.kegs.length = 0
-    next()
-  },
   data () {
     return {
       addSecond: false, // if user clicks to add a second scale, gets set to true
@@ -192,12 +188,17 @@ export default {
     btnText (num) {
       return (this.scale[num].disableBtn ? 'Registered' : 'Submit')
     },
-    changeName (num) {
-      Api().patch('/change-name', {
+    async changeName (num) {
+      let res = await Api().patch('/change-name', {
         email: this.getEmail,
         keg: num,
         name: this.scale[num].name
       })
+      if (res.data.message === 'Name changed') {
+        this.$store.state.kegs[num].name = this.scale[num].name
+      } else {
+        alert('Name change failed')
+      }
     },
     disabled (num) {
       return (this.scale[num].name === '')

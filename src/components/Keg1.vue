@@ -4,7 +4,7 @@
       <span class="h4">{{ getKegs[0].name }}</span>
     </div>
     <div class="card-body pt-1">
-      <div class="d-flex justify-content-end pb-1"><i @click="menuItems = !menuItems" class="menu fas fa-bars"></i></div>
+      <div class="d-flex justify-content-end pb-2"><i @click="menuItems = !menuItems" class="menu fas fa-bars"></i></div>
       <div v-if="menuItems" class="mb-3">
         <small>Status: <span class="badge" :class="[{ 'badge-success': connected }, { 'badge-danger': !connected }]">{{ connected ? 'Connected' : 'Disconnected' }}</span></small>
         <br>
@@ -54,14 +54,25 @@ export default {
       'getKegs'
     ]),
     percent () {
-      return ((this.weight / this.fullWeight) * 100).toFixed(0)
-    },
-    roomId () {
-      return this.$route.params.roomId
+      const result = ((this.weight / this.getKegs[0].fullWeight) * 100).toFixed(0)
+      if (result > 100) {
+        return 100
+      } else if (result < 0) {
+        return 0
+      } else {
+        return result
+      }
     },
     settingsTxt () {
       return (this.changeSettings ? 'Edit' : 'Done')
     }
+  },
+
+  created () {
+    console.log(`Connected to socket ${this.$socket.id}`)
+    this.$socket.emit('room', this.getKegs[0].id)
+    this.fullWeight = this.getKegs[0].fullWeight
+    this.offset = this.getKegs[0].tareWeight
   },
 
   methods: {
@@ -90,10 +101,6 @@ export default {
   },
 
   sockets: {
-    connect () {
-      console.log(`Connected to socket ${this.$socket.id}`)
-      this.$socket.emit('room', this.getKegs[0].id)
-    },
     weightUpdate (weight) {
       if (weight) { this.connected = true }
       if (weight.medianOffset > 0) {
@@ -110,7 +117,7 @@ export default {
       Api().patch('set-tare-weight', {
         email: this.getEmail,
         keg: 0,
-        tareWeight: this.offest
+        tareWeight: this.offset
       })
     }
   }

@@ -1,5 +1,5 @@
 <template lang="html">
-  <nav class="navbar navbar-expand-sm navbar-light bg-light shadow-sm">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark shadow">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="#navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -30,23 +30,31 @@ export default {
 
   methods: {
     ...mapMutations([
-      'storeEmail'
+      'storeEmail',
+      'storeKegs'
     ]),
-    login () {
-      Api().post('/login', {
+    async login () {
+      let loginRes = await Api().post('/login', {
         email: this.email,
         password: this.password
-      }).then((res) => {
-        if (res.data.success === 'yes') {
-          this.storeEmail(this.email)
-          this.$cookies.set('user_session', this.email, '0')
-          this.$router.push('/my-kegs')
-        } else {
-          alert('Login failed')
-        }
-      }).catch((err) => {
-        alert(err)
       })
+      let getKegsRes = await Api().get('/get-kegs', {
+        params: {
+          email: this.email
+        }
+      })
+      if (getKegsRes.data.userKegs) {
+        this.storeKegs(getKegsRes.data.userKegs)
+      } else if (getKegsRes.data.message) {
+        alert('Could not retrieve your Kegmos')
+      }
+      if (loginRes.data.success === 'yes') {
+        this.storeEmail(this.email)
+        this.$cookies.set('user_session', this.email, '0')
+        this.$router.push('/my-kegs')
+      } else {
+        alert('Login failed...')
+      }
     }
   }
 }

@@ -74,10 +74,30 @@ export default {
 
 /* The Foam */
 
-.foam-1, .foam-2, .foam-3, .foam-4,
+.foam-1 {
+  float: left;
+  position: absolute;
+  z-index: 2;
+  width: 19px;
+  height: 25px;
+  border-radius: 30px;
+  border-top: solid #f7f7f7 1px;
+  background-color: #fefefe;
+}
+.foam-15 {
+  float: left;
+  position: absolute;
+  z-index: 2;
+  width: 19px;
+  height: 23px;
+  border-radius: 30px;
+  border-top: solid #f7f7f7 1px;
+  background-color: #fefefe;
+}
+.foam-2, .foam-3, .foam-4,
 .foam-5, .foam-6, .foam-7, .foam-8,
 .foam-9, .foam-10, .foam-11, .foam-12,
-.foam-13, .foam-14, .foam-15
+.foam-13, .foam-14
  {
   float: left;
   position: absolute;
@@ -89,12 +109,12 @@ export default {
   background-color: #fefefe;
 }
 .foam-1 {
-  top: -15px;
-  left: 0px;
+  top: -20px;
+  left: -1px;
 }
 .foam-2 {
   top: -22px;
-  left: 12px;
+  left: 10px;
 }
 .foam-3 {
   top: -20px;
@@ -148,7 +168,7 @@ export default {
 
 .foam-15 {
   top: -19px;
-  left: 166px;
+  left: 172px;
 }
 
 /* The Bubbles */
