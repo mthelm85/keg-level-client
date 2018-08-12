@@ -3,10 +3,17 @@
     <div class="card-header">
       <span class="h4">{{ getKegs[0].name }}</span>
     </div>
-    <div class="card-body">
+    <div class="card-body pt-1">
+      <div class="d-flex justify-content-end pb-1"><i @click="menuItems = !menuItems" class="menu fas fa-bars"></i></div>
+      <div v-if="menuItems" class="mb-3">
+        <small>Status: <span class="badge" :class="[{ 'badge-success': connected }, { 'badge-danger': !connected }]">{{ connected ? 'Connected' : 'Disconnected' }}</span></small>
+        <br>
+        <small>Level: {{ percent }}%</small>
+      </div>
       <keg-graphic :percent="percent" :beerColor="getKegs[0].color"></keg-graphic>
     </div>
     <div class="card-footer">
+      <bounce-loader v-if="waiting" class="overlay d-flex align-items-center justify-content-center"></bounce-loader>
       <span class="settings btn btn-sm btn-outline-primary" @click="changeSettings = !changeSettings"><small>{{ settingsTxt }}</small></span>
       <button :disabled="changeSettings" @click="changeColor(0)" class="btn btn-color-picker pale mb-3"></button>
       <button :disabled="changeSettings" @click="changeColor(1)" class="btn btn-color-picker brown mb-3"></button>
@@ -20,18 +27,24 @@
 
 <script>
 import Api from '@/api'
+import BounceLoader from 'vue-spinner/src/BounceLoader'
 import KegGraphic from '@/components/kegGraphic'
 import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       changeSettings: true,
+      connected: false,
       fullWeight: null,
+      menuItems: false,
+      offset: null,
+      waiting: false,
       weight: null
     }
   },
 
   components: {
+    BounceLoader,
     KegGraphic
   },
 
@@ -62,21 +75,43 @@ export default {
         this.$store.state.kegs[0].color = num
       }
     },
-    setFull () {
+    async setFull () {
       this.fullWeight = this.weight
+      Api().patch('/set-full-weight', {
+        email: this.getEmail,
+        keg: 0,
+        fullWeight: this.weight
+      })
     },
     tare () {
+      this.waiting = true
       this.$socket.emit('tare', this.getKegs[0].id)
     }
   },
 
   sockets: {
     connect () {
+      console.log(`Connected to socket ${this.$socket.id}`)
       this.$socket.emit('room', this.getKegs[0].id)
     },
     weightUpdate (weight) {
-      console.log(`Keg1 weight is: ${weight}`)
-      this.weight = weight
+      if (weight) { this.connected = true }
+      if (weight.medianOffset > 0) {
+        this.waiting = false
+        this.offset = weight.medianOffset
+      }
+      console.log(`Keg1 weight is: ${(weight.weight - (weight.medianOffset / 1000).toFixed(0))}`)
+      this.weight = (weight.weight - (weight.medianOffset / 1000).toFixed(0))
+    }
+  },
+
+  watch: {
+    offset () {
+      Api().patch('set-tare-weight', {
+        email: this.getEmail,
+        keg: 0,
+        tareWeight: this.offest
+      })
     }
   }
 }

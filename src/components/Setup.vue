@@ -55,9 +55,9 @@
         </div>
       </div>
     </div>
-    <div v-show="addSecond" class="row mt-4">
+    <div v-if="addSecond" class="row mt-4">
       <!-- Register Scale #3 -->
-      <div class="col d-flex justify-content-center">
+      <div class="col">
         <div class="card shadow">
           <div class="card-header text-center">
             {{ headerText(2) }}
@@ -84,8 +84,8 @@
         </div>
       </div>
       <!-- Register Scale #4 -->
-      <div class="col d-flex justify-content-center">
-        <div class="card shadow">
+      <div class="col">
+        <div v-if="addThird" class="card shadow">
           <div class="card-header text-center">
             {{ headerText(3) }}
           </div>

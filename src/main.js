@@ -13,8 +13,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 Vue.use(Cookies)
-Vue.use(VueSocketio, 'https://helm-iot-server.herokuapp.com/')
-// Vue.use(VueSocketio, 'http://localhost:3000')
+// Vue.use(VueSocketio, 'https://helm-iot-server.herokuapp.com/')
+Vue.use(VueSocketio, 'http://localhost:3000')
 
 Vue.config.productionTip = false
 

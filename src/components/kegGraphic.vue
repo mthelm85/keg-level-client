@@ -81,7 +81,7 @@ export default {
  {
   float: left;
   position: absolute;
-  z-index: 999;
+  z-index: 2;
   width: 25px;
   height: 25px;
   border-radius: 30px;

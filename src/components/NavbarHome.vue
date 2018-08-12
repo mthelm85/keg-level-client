@@ -39,7 +39,7 @@ export default {
       }).then((res) => {
         if (res.data.success === 'yes') {
           this.storeEmail(this.email)
-          this.$cookies.set('user_session', res.data.userEmail, '0')
+          this.$cookies.set('user_session', this.email, '0')
           this.$router.push('/my-kegs')
         } else {
           alert('Login failed')
