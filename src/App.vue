@@ -12,9 +12,6 @@ export default {
 </script>
 
 <style>
-html, body {
-  background-color: #343a40;
-}
 .menu:hover {
   cursor: pointer;
   color: gray;

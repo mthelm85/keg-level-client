@@ -116,7 +116,7 @@
 
 <script>
 import Api from '@/api'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -146,6 +146,23 @@ export default {
         }
       ]
     }
+  },
+
+  async beforeRouteLeave (to, from, next) {
+    if (to.name === 'MyKegs') {
+      this.$store.state.kegs.length = 0
+      let res = await Api().get('/get-kegs', {
+        params: {
+          email: this.getEmail
+        }
+      })
+      if (res.data.userKegs) {
+        this.storeKegs(res.data.userKegs)
+      } else if (res.data.message) {
+        alert('Could not retrieve your Kegmos')
+      }
+    }
+    next()
   },
 
   computed: {
@@ -185,6 +202,9 @@ export default {
   },
 
   methods: {
+    ...mapMutations([
+      'storeKegs'
+    ]),
     btnText (num) {
       return (this.scale[num].disableBtn ? 'Registered' : 'Submit')
     },

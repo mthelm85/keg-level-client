@@ -22,6 +22,7 @@ import Api from '@/api'
 export default {
   methods: {
     logout () {
+      this.$store.state.kegs.length = 0
       Api().get('logout')
       this.$cookies.remove('user_session')
       this.$router.push('/')

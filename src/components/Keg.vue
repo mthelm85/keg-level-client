@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="card shadow">
     <div class="card-header">
-      <span class="h4">{{ getKegs[0].name }}</span>
+      <span class="h4">{{ getKegs[num].name }}</span>
     </div>
     <div class="card-body pt-1">
       <div class="d-flex justify-content-end pb-2"><i @click="menuItems = !menuItems" class="menu fas fa-bars"></i></div>
@@ -10,7 +10,7 @@
         <br>
         <small>Level: {{ percent }}%</small>
       </div>
-      <keg-graphic :percent="percent" :beerColor="getKegs[0].color"></keg-graphic>
+      <keg-graphic :percent="percent" :beerColor="getKegs[num].color"></keg-graphic>
     </div>
     <div class="card-footer">
       <bounce-loader v-if="waiting" class="overlay d-flex align-items-center justify-content-center"></bounce-loader>
@@ -54,7 +54,7 @@ export default {
       'getKegs'
     ]),
     percent () {
-      const result = ((this.weight / this.getKegs[0].fullWeight) * 100).toFixed(0)
+      const result = ((this.weight / this.getKegs[this.num].fullWeight) * 100).toFixed(0)
       if (result > 100) {
         return 100
       } else if (result < 0) {
@@ -70,35 +70,39 @@ export default {
 
   created () {
     console.log(`Connected to socket ${this.$socket.id}`)
-    this.$socket.emit('room', this.getKegs[0].id)
-    this.fullWeight = this.getKegs[0].fullWeight
-    this.offset = this.getKegs[0].tareWeight
+    this.$socket.emit('room', this.getKegs[this.num].id)
+    this.fullWeight = this.getKegs[this.num].fullWeight
+    this.offset = this.getKegs[this.num].tareWeight
   },
 
   methods: {
     async changeColor (num) {
       let res = await Api().patch('/change-color', {
         email: this.getEmail,
-        keg: 0,
+        keg: this.num,
         color: num
       })
       if (res.data.message === 'Color changed') {
-        this.$store.state.kegs[0].color = num
+        this.$store.state.kegs[this.num].color = num
       }
     },
     async setFull () {
       this.fullWeight = this.weight
       Api().patch('/set-full-weight', {
         email: this.getEmail,
-        keg: 0,
+        keg: this.num,
         fullWeight: this.weight
       })
     },
     tare () {
       this.waiting = true
-      this.$socket.emit('tare', this.getKegs[0].id)
+      this.$socket.emit('tare', this.getKegs[this.num].id)
     }
   },
+
+  props: [
+    'num'
+  ],
 
   sockets: {
     weightUpdate (weight) {
@@ -107,7 +111,7 @@ export default {
         this.waiting = false
         this.offset = weight.medianOffset
       }
-      console.log(`Keg1 weight is: ${(weight.weight - (weight.medianOffset / 1000).toFixed(0))}`)
+      console.log(`Keg${this.num + 1} weight is: ${(weight.weight - (weight.medianOffset / 1000).toFixed(0))}`)
       this.weight = (weight.weight - (weight.medianOffset / 1000).toFixed(0))
     }
   },
@@ -116,7 +120,7 @@ export default {
     offset () {
       Api().patch('set-tare-weight', {
         email: this.getEmail,
-        keg: 0,
+        keg: this.num,
         tareWeight: this.offset
       })
     }
