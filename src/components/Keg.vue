@@ -106,13 +106,15 @@ export default {
 
   sockets: {
     weightUpdate (weight) {
-      if (weight) { this.connected = true }
+      if (weight.roomId === this.getKegs[this.num].id) {
+        this.connected = true
+        console.log(`Keg${this.num + 1} weight is: ${(weight.weight - (weight.medianOffset / 1000).toFixed(0))}`)
+        this.weight = (weight.weight - (weight.medianOffset / 1000).toFixed(0))
+      }
       if (weight.medianOffset > 0) {
         this.waiting = false
         this.offset = weight.medianOffset
       }
-      console.log(`Keg${this.num + 1} weight is: ${(weight.weight - (weight.medianOffset / 1000).toFixed(0))}`)
-      this.weight = (weight.weight - (weight.medianOffset / 1000).toFixed(0))
     }
   },
 
