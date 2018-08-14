@@ -9,7 +9,7 @@ import Setup from '@/components/Setup'
 Vue.use(Router)
 
 const auth = (to, from, next) => {
-  if (this.a.app.$cookies.isKey('user_session')) {
+  if (window.$cookies.isKey('user_session')) {
     next()
   } else {
     next('/')
