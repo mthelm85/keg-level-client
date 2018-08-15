@@ -59,8 +59,10 @@ export default {
         return 100
       } else if (result < 0) {
         return 0
-      } else {
+      } else if (result >= 0 && result <= 100) {
         return result
+      } else {
+        return 0
       }
     },
     settingsTxt () {
@@ -87,7 +89,7 @@ export default {
       }
     },
     async setFull () {
-      this.fullWeight = this.weight
+      this.$store.state.kegs[this.num].fullWeight = this.weight
       Api().patch('/set-full-weight', {
         email: this.getEmail,
         keg: this.num,
