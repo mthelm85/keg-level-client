@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row mt-4">
       <!-- Register Scale #1 -->
-      <div class="col">
+      <div class="col-12 col-md">
         <div class="card shadow">
           <div class="card-header text-center">
             Register Your Kegmo
@@ -28,7 +28,7 @@
         </div>
       </div>
       <!-- Register Scale #2 -->
-      <div class="col">
+      <div class="col-12 col-md mobile-margin">
         <div class="card shadow">
           <div class="card-header text-center">
             {{ headerText(1) }}
@@ -55,9 +55,9 @@
         </div>
       </div>
     </div>
-    <div v-if="addSecond" class="row mt-4">
+    <div v-if="addSecond" class="row mt-3">
       <!-- Register Scale #3 -->
-      <div class="col">
+      <div class="col-12 col-md">
         <div class="card shadow">
           <div class="card-header text-center">
             {{ headerText(2) }}
@@ -84,7 +84,7 @@
         </div>
       </div>
       <!-- Register Scale #4 -->
-      <div class="col">
+      <div class="col-12 col-md mobile-margin">
         <div v-if="addThird" class="card shadow">
           <div class="card-header text-center">
             {{ headerText(3) }}
@@ -262,4 +262,5 @@ i {
 .settings:hover {
   cursor: pointer;
 }
+
 </style>

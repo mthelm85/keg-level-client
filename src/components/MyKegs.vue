@@ -4,7 +4,7 @@
       <div class="col d-flex justify-content-center text-center mx-auto">
         <keg :num="0"></keg>
       </div>
-      <div v-if="getKegs.length > 1" class="col d-flex justify-content-center text-center mx-auto">
+      <div v-if="getKegs.length > 1" class="col mobile-margin d-flex justify-content-center text-center mx-auto">
         <keg :num="1"></keg>
       </div>
     </div>
@@ -12,7 +12,7 @@
       <div class="col d-flex justify-content-center text-center mx-auto">
         <keg :num="2"></keg>
       </div>
-      <div class="col d-flex justify-content-center text-center mx-auto">
+      <div class="col mobile-margin d-flex justify-content-center text-center mx-auto">
         <keg :num="3" v-if="getKegs.length > 3"></keg>
       </div>
     </div>

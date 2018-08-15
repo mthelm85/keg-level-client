@@ -25,4 +25,8 @@ export default {
   background-color: rgba(0,0,0,0.5); /* Black background with opacity */
   z-index: 20;
 }
+
+@media screen and (max-width: 767px) {
+  .mobile-margin { margin-top: 15px; }
+}
 </style>
