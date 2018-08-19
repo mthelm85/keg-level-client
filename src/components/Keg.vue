@@ -88,7 +88,7 @@ export default {
         this.$store.state.kegs[this.num].color = num
       }
     },
-    async setFull () {
+    setFull () {
       this.$store.state.kegs[this.num].fullWeight = this.weight
       Api().patch('/set-full-weight', {
         email: this.getEmail,
