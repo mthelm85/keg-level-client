@@ -28,89 +28,93 @@
         </div>
       </div>
       <!-- Register Scale #2 -->
-      <div class="col-12 col-md mobile-margin">
-        <div class="card shadow">
-          <div class="card-header text-center">
-            {{ headerText(1) }}
-          </div>
-          <div class="card-body text-center">
-            <button v-if="!addSecond" @click="addSecond = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
-            <form v-else>
-              <div class="form-group">
-                <label>Kegmo Name</label>
-                <div class="input-group">
-                  <input v-model="scale[1].name" type="text" class="form-control">
-                  <div class="input-group-append">
-                    <button @click.prevent="changeName(1)" :disabled="disabled(1)" class="btn btn-outline-secondary">Change</button>
+        <div class="col-12 col-md mobile-margin">
+          <div class="card shadow">
+            <div class="card-header text-center">
+              {{ headerText(1) }}
+            </div>
+            <div class="card-body text-center">
+              <button v-if="!addSecond" @click="addSecond = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
+              <form v-else>
+                <div class="form-group">
+                  <label>Kegmo Name</label>
+                  <div class="input-group">
+                    <input v-model="scale[1].name" type="text" class="form-control">
+                    <div class="input-group-append">
+                      <button @click.prevent="changeName(1)" :disabled="disabled(1)" class="btn btn-outline-secondary">Change</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label>Kegmo I.D. (from box)</label>
-                <input v-model="scale[1].id" type="text" class="form-control">
-              </div>
-              <button @click.prevent="register(1)" :disabled="scale[1].disableBtn" class="btn btn-primary">{{ btnText(1) }}</button>
-            </form>
+                <div class="form-group">
+                  <label>Kegmo I.D. (from box)</label>
+                  <input v-model="scale[1].id" type="text" class="form-control">
+                </div>
+                <button @click.prevent="register(1)" :disabled="scale[1].disableBtn" class="btn btn-primary">{{ btnText(1) }}</button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
     </div>
-    <div v-if="addSecond" class="row mt-3">
-      <!-- Register Scale #3 -->
-      <div class="col-12 col-md">
-        <div class="card shadow">
-          <div class="card-header text-center">
-            {{ headerText(2) }}
-          </div>
-          <div class="card-body text-center">
-            <button v-if="!addThird" @click="addThird = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
-            <form v-else>
-              <div class="form-group">
-                <label>Kegmo Name</label>
-                <div class="input-group">
-                  <input v-model="scale[2].name" type="text" class="form-control">
-                  <div class="input-group-append">
-                    <button @click.prevent="changeName(2)" :disabled="disabled(2)" class="btn btn-outline-secondary">Change</button>
+    <transition name="fade">
+      <div v-if="addSecond" class="row mt-3">
+        <!-- Register Scale #3 -->
+        <div class="col-12 col-md">
+          <div class="card shadow">
+            <div class="card-header text-center">
+              {{ headerText(2) }}
+            </div>
+            <div class="card-body text-center">
+              <button v-if="!addThird" @click="addThird = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
+              <form v-else>
+                <div class="form-group">
+                  <label>Kegmo Name</label>
+                  <div class="input-group">
+                    <input v-model="scale[2].name" type="text" class="form-control">
+                    <div class="input-group-append">
+                      <button @click.prevent="changeName(2)" :disabled="disabled(2)" class="btn btn-outline-secondary">Change</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label>Kegmo I.D. (from box)</label>
-                <input v-model="scale[2].id" type="text" class="form-control">
-              </div>
-              <button @click.prevent="register(2)" :disabled="scale[2].disableBtn" class="btn btn-primary">{{ btnText(2) }}</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <!-- Register Scale #4 -->
-      <div class="col-12 col-md mobile-margin">
-        <div v-if="addThird" class="card shadow">
-          <div class="card-header text-center">
-            {{ headerText(3) }}
-          </div>
-          <div class="card-body text-center">
-            <button v-if="!addFourth" @click="addFourth = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
-            <form v-else>
-              <div class="form-group">
-                <label>Kegmo Name</label>
-                <div class="input-group">
-                  <input v-model="scale[3].name" type="text" class="form-control">
-                  <div class="input-group-append">
-                    <button @click.prevent="changeName(3)" :disabled="disabled(3)" class="btn btn-outline-secondary">Change</button>
-                  </div>
+                <div class="form-group">
+                  <label>Kegmo I.D. (from box)</label>
+                  <input v-model="scale[2].id" type="text" class="form-control">
                 </div>
-              </div>
-              <div class="form-group">
-                <label>Kegmo I.D. (from box)</label>
-                <input v-model="scale[3].id" type="text" class="form-control">
-              </div>
-              <button @click.prevent="register(3)" :disabled="scale[3].disableBtn" class="btn btn-primary">{{ btnText(3) }}</button>
-            </form>
+                <button @click.prevent="register(2)" :disabled="scale[2].disableBtn" class="btn btn-primary">{{ btnText(2) }}</button>
+              </form>
+            </div>
           </div>
         </div>
+        <!-- Register Scale #4 -->
+        <div class="col-12 col-md mobile-margin">
+          <transition name="fade">
+            <div v-if="addThird" class="card shadow">
+              <div class="card-header text-center">
+                {{ headerText(3) }}
+              </div>
+              <div class="card-body text-center">
+                <button v-if="!addFourth" @click="addFourth = true" class="btn btn-dark"><i class="fas fa-plus"></i></button>
+                <form v-else>
+                  <div class="form-group">
+                    <label>Kegmo Name</label>
+                    <div class="input-group">
+                      <input v-model="scale[3].name" type="text" class="form-control">
+                      <div class="input-group-append">
+                        <button @click.prevent="changeName(3)" :disabled="disabled(3)" class="btn btn-outline-secondary">Change</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Kegmo I.D. (from box)</label>
+                    <input v-model="scale[3].id" type="text" class="form-control">
+                  </div>
+                  <button @click.prevent="register(3)" :disabled="scale[3].disableBtn" class="btn btn-primary">{{ btnText(3) }}</button>
+                </form>
+              </div>
+            </div>
+          </transition>
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 

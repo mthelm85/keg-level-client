@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-    <router-view name="navbar"></router-view>
-    <router-view name="body"></router-view>
+    <transition name="fade" mode="out-in">
+      <router-view name="navbar"></router-view>
+    </transition>
+    <transition name="fade" mode="out-in">
+      <router-view name="body"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -11,7 +15,20 @@ export default {
 }
 </script>
 
-<style>
+<style lang="css">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.height-enter-active, .height-leave-active {
+  transition: all 1s;
+  max-height: 1600px;
+}
+.height-enter, .height-leave-to {
+  max-height: 0;
+}
 .menu:hover {
   cursor: pointer;
   color: gray;

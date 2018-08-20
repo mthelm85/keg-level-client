@@ -3,15 +3,33 @@
     <div class="card-header">
       <span class="h4">{{ getKegs[num].name }}</span>
     </div>
-    <div class="card-body pt-1">
-      <div class="d-flex justify-content-end pb-2"><i @click="menuItems = !menuItems" class="menu fas fa-bars"></i></div>
-      <div v-if="menuItems" class="mb-3">
-        <small>Status: <span class="badge" :class="[{ 'badge-success': connected }, { 'badge-danger': !connected }]">{{ connected ? 'Connected' : 'Disconnected' }}</span></small>
-        <br>
-        <small>Level: {{ percent }}%</small>
+    <transition name="fade">
+      <div class="card-body pt-1">
+        <div class="d-flex justify-content-end pb-2">
+          <i @click="showStatus" class="menu fas fa-bars"></i>
+          <b-modal
+            ref="kegStatus"
+            size="sm"
+            hide-footer
+            header-class="text-center"
+            body-class="text-left"
+            :title="getKegs[num].name"
+            centered>
+            Status: <span class="badge" :class="[{ 'badge-success': connected }, { 'badge-danger': !connected }]">{{ connected ? 'Connected' : 'Disconnected' }}</span>
+            <br>
+            Beer Level: <span class="badge badge-secondary">{{ percent }}%</span>
+          </b-modal>
+        </div>
+        <transition name="height">
+          <div v-if="menuItems" class="mb-3">
+            <small>Status: <span class="badge" :class="[{ 'badge-success': connected }, { 'badge-danger': !connected }]">{{ connected ? 'Connected' : 'Disconnected' }}</span></small>
+            <br>
+            <small>Level: {{ percent }}%</small>
+          </div>
+        </transition>
+        <keg-graphic :percent="percent" :beerColor="getKegs[num].color"></keg-graphic>
       </div>
-      <keg-graphic :percent="percent" :beerColor="getKegs[num].color"></keg-graphic>
-    </div>
+    </transition>
     <div class="card-footer">
       <bounce-loader v-if="waiting" class="overlay d-flex align-items-center justify-content-center"></bounce-loader>
       <span class="settings btn btn-sm btn-outline-primary" @click="changeSettings = !changeSettings"><small>{{ settingsTxt }}</small></span>
@@ -95,6 +113,9 @@ export default {
         keg: this.num,
         fullWeight: this.weight
       })
+    },
+    showStatus () {
+      this.$refs.kegStatus.show()
     },
     tare () {
       this.waiting = true
