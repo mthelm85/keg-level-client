@@ -11,7 +11,10 @@
       <form class="form-inline my-2 my-lg-0" @submit.prevent="login">
         <input class="form-control mr-sm-2" v-model.trim="email" type="email" name="email" placeholder="E-mail" aria-label="E-mail">
         <input class="form-control mr-sm-2" v-model.trim="password" type="password" name="password" placeholder="Password" aria-label="Password">
-        <button class="btn btn-success my-2 my-sm-0">Login</button>
+        <transition name="fade" mode="out-in">
+          <button v-if="!waiting" class="btn btn-success my-2 my-sm-0">Login</button>
+          <beat-loader v-else class="d-flex align-items-center justify-content-end mr-2"></beat-loader>
+        </transition>
       </form>
     </div>
   </nav>
@@ -19,13 +22,19 @@
 
 <script>
 import Api from '@/api'
+import BeatLoader from 'vue-spinner/src/BeatLoader'
 import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      waiting: false
     }
+  },
+
+  components: {
+    BeatLoader
   },
 
   methods: {
@@ -34,6 +43,7 @@ export default {
       'storeKegs'
     ]),
     async login () {
+      this.waiting = true
       let loginRes = await Api().post('/login', {
         email: this.email,
         password: this.password

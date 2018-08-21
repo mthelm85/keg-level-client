@@ -28,6 +28,7 @@ export default {
 }
 .height-enter, .height-leave-to {
   max-height: 0;
+  opacity: 0;
 }
 .menu:hover {
   cursor: pointer;
