@@ -64,6 +64,7 @@ export default {
           this.$router.push('/my-kegs')
         } else {
           alert(loginRes.data.Result)
+          this.waiting = false
         }
       } catch (err) {
         alert('Login failed. Check credentials and try again.')
