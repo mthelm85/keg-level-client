@@ -45,22 +45,18 @@ export default {
     ...mapMutations([
       'storeEmail'
     ]),
-    login () {
-      Api().post('/signup', {
+    async login () {
+      let res = await Api().post('/signup', {
         email: this.email,
         password: this.password
-      }).then((res) => {
-        console.log(res)
-        if (res.data.success === 'yes') {
-          this.storeEmail(this.email)
-          this.$cookies.set('user_session', this.email, '0')
-          this.$router.push('/setup')
-        } else {
-          alert('Login failed')
-        }
-      }).catch((err) => {
-        alert(err)
       })
+      if (res.data.Result === 'User created successfully') {
+        this.storeEmail(this.email)
+        this.$cookies.set('user_session', this.email, '0')
+        this.$router.push('/setup')
+      } else {
+        alert(res.data.Result)
+      }
     }
   }
 }
